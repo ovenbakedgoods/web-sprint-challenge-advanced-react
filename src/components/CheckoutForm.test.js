@@ -1,10 +1,25 @@
 import React from "react";
 import MutationObserver from 'mutationobserver-shim';
-import { render } from "@testing-library/react";
+import { fireEvent, render, screen } from "@testing-library/react";
 import CheckoutForm from "./CheckoutForm";
+import userEvent from "@testing-library/user-event";
 
-// Write up the two tests here and make sure they are testing what the title shows
 
-test("renders without errors", () => {});
+// form renders without error
+test("renders without errors", () => {
+    render(<CheckoutForm />);
+});
+//shows success message on firing submit button
+test("shows success message on submit with form details", () => {
+    //arrange 
+    const screen = render(<CheckoutForm />);
+    const submitButton = screen.getByRole('button', {name: /checkout/i});
+    
+    //act
+    fireEvent.click(submitButton);
 
-test("shows success message on submit with form details", () => {});
+    //assert
+    const success = screen.getByTestId("successMessage");
+    expect(success).toBeInTheDocument();
+    expect(success).toBeTruthy();
+});
